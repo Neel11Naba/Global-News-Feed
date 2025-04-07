@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+0<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -86,13 +86,13 @@
     {% if articles %}
         {% for article in articles %}
             <div class="news-card">
-                {% if article.urlToImage %}
-                    <img src="{{ article.urlToImage }}" alt="News Image">
-                {% endif %}
-                <div class="news-title">{{ article.title }}</div>
-                <p>{{ article.description }}</p>
-                <p><small>{{ article.publishedAt[:10] }} | Source: {{ article.source.name }}</small></p>
-                <a href="{{ article.url }}" target="_blank">Read More</a>
+  {% if article.get('urlToImage') %}
+    <img src="{{ article['urlToImage'] }}" alt="News Image">
+  {% endif %}
+  <h2>{{ article.get('title', 'No Title') }}</h2>
+  <p>{{ article.get('description', 'No Description') }}</p>
+  <p><strong>Published At:</strong> {{ article.get('publishedAt', 'Date not available') }}</p>
+  <a href="{{ article.get('url', '#') }}" target="_blank">Read More</a>
             </div>
         {% endfor %}
     {% else %}
