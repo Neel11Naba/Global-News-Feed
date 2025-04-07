@@ -9,9 +9,8 @@ NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 PAGE_SIZE = 8 # number of article per page
 
 def get_news(query=None, page=1, country='us'):
-    url =
-    f'https://newsapi.org/v2/everything'
-     params = {
+    url ='https://newsapi.org/v2/everything'
+    params = {
          "q": query or "indian stock market",
          "language": "en",
          "sortBy": "publishedAt",
