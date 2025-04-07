@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
-def get_news(category='business', query=None, country='in'):
+def get_news(category='business', query='indian+stock+market', country='in'):
     url = f'https://newsapi.org/v2/top-headlines?country={country}&category={category}&apiKey={NEWS_API_KEY}'
 
     if query:
