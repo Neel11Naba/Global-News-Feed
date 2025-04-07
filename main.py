@@ -1,19 +1,28 @@
 import os
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jesonify
 from datetime import datetime
 
 app = Flask(__name__)
 
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
+PAGE_SIZE = 8 # number of article per page
 
-def get_news(category='business', query='indian+stock+market', country='us'):
-    url = f'https://newsapi.org/v2/top-headlines?country={country}&category={category}&apiKey={NEWS_API_KEY}'
+def get_news(query=None, page=1, country='us'):
+    url = 'https://newsapi.org/v2/everything"
+     params{
+         "q": query or "indian stock market",
+         "language": "en",
+         "sortBy": "publishAt",
+         "apikey": NEWS_API_KEY,
+         "pageSize": PAGE_SIZE,
+         "page": page
+     }
 
     if query:
-        url = f'https://newsapi.org/v2/everything?q={query}&language=en&sortBy=publishedAt&apiKey={NEWS_API_KEY}'
+        url = 'https://newsapi.org/v2/everything?q={query}&language=en&sortBy=publishedAt&apiKey={NEWS_API_KEY}'
 
-    response = requests.get(url)
+    response = requests.get(url,params=params)
     data = response.json()
 
     articles = []
@@ -37,11 +46,15 @@ def format_datetime(date_str):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    query = request.args.get("q")
-    category = request.args.get("category", "business")
-    news = get_news(category=category, query=query)
+    articles = get_news(page=1)
+    return
+render_template("index.html", articles = articles)
 
-    return render_template("index.html", articles=news, query=query, selected_category=category)
+@app.route('/load_more')
+def load_more():
+ page = int(request.args.get("page",1))
+articles = get_news(page = page)
+return jesonify(articles)
 
 @app.route("/about")
 def about():
