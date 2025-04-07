@@ -10,7 +10,7 @@ PAGE_SIZE = 8 # number of article per page
 
 def get_news(query=None, page=1, country='us'):
     url = 'https://newsapi.org/v2/everything'
-     params={
+     params = {
          "q": query or "indian stock market",
          "language": "en",
          "sortBy": "publishedAt",
