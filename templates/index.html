@@ -56,6 +56,15 @@
             background: #f1f1f1;
         }
     </style>
+    <style>
+.news-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+    </style>
 </head>
 <body>
 
@@ -103,6 +112,36 @@
 <footer>
     &copy; 2025 Global News Feed. All rights reserved.
 </footer>
+    
+<script>
+let page = 2; // We already loaded page 1 initially
+let isLoading = false;
 
+window.addEventListener('scroll', async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !isLoading) {
+        isLoading = true;
+        const response = await fetch(`/load_more?page=${page}`);
+        const articles = await response.json();
+
+        if (articles.length > 0) {
+            const container = document.getElementById("news-container");
+            articles.forEach(article => {
+                const card = document.createElement("div");
+                card.className = "news-card";
+                card.innerHTML = `
+                    <img src="${article.urlToImage || '/static/default.jpg'}" alt="news-image">
+                    <h2>${article.title}</h2>
+                    <p>${article.description || ""}</p>
+                    <small>${new Date(article.publishedAt).toLocaleString()}</small>
+                    <br><a href="${article.url}" target="_blank">Read More</a>
+                `;
+                container.appendChild(card);
+            });
+            page++;
+            isLoading = false;
+        }
+    }
+});
+</script>
 </body>
 </html>
