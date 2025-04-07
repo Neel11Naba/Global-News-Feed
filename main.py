@@ -54,7 +54,7 @@ render_template("index.html", articles = articles)
 def load_more():
  page = int(request.args.get("page",1))
 articles = get_news(page = page)
-return jesonify(articles)
+return jsonify(articles)
 
 @app.route("/about")
 def about():
